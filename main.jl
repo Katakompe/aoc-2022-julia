@@ -1,14 +1,76 @@
-include("./day-1/Day1.jl")
-include("./day-2/Day2.jl")
-include("./day-3/Day3.jl")
-include("./day-4/Day4.jl")
+include("./Imports.jl")
+using .Imports
+
+solved_days= [1,2,3,4,5]
+for day in solved_days
+    include("./day-$day/Day$day.jl")
+end
 
 
-day1Part1 = Day1.part1("./day-1/input.txt")
-println("Result Day 1-1: $(day1Part1)")
-day1Part2 = Day1.part2("./day-1/input.txt")
-println("Result Day 1-2: $(day1Part2)")
-println("")
+function runDay(
+        day,
+        part1_fn,
+        part2_fn,
+        input1_transform = str::String -> str,
+        input2_transform = str::String -> str
+    )
+    input_path = "./day-$day/input.txt"
+    f = open(input_path)
+    raw_input = read(f, String)
+    input = input1_transform(raw_input)
+    #part 1
+    part1 =part1_fn(input)
+    println("Result Day $day-1: $(part1)")
+    duration1 = @elapsed part1_fn(input)
+    println("Duration for part2: $(duration1*1000000) μs")
+
+    #part2
+    input = input2_transform(raw_input)
+    part2 =  part2_fn(input)
+    println("Result Day $day-2: $(part2)")
+    duration2 = @elapsed part2_fn(input)
+    println("Duration for part2: $(duration2*1000000) μs")
+    println("")
+    close(f)
+end
+
+runDay(
+    1,
+    Day1.part1,
+    Day1.part2,
+    str -> list_of_type_2d(str, Int, "\n\n", "\n"),
+    str -> list_of_type_2d(str, Int, "\n\n", "\n")
+    )
+
+runDay(
+    2,
+    Day2.part1,
+    Day2.part2,
+    list_of_strings,
+    list_of_strings
+)
+
+runDay(
+    3,
+    Day3.part1,
+    Day3.part2,
+    list_of_strings,
+    list_of_strings
+    )
+
+runDay(
+    4,
+    Day4.part1,
+    Day4.part2,
+    str -> list_of_strings_2d(str, "\n", ","),
+    str -> list_of_strings_2d(str, "\n", ",")
+    )
+
+runDay(5, Day5.part1, Day5.part2)
+
+
+
+#=
 
 day2Part1 = Day2.part1("./day-2/input.txt")
 println("Result Day 2-1: $(day2Part1)")
@@ -27,3 +89,10 @@ println("Result Day 4-1: $(day4Part1)")
 day4Part2 = Day4.part2("./day-4/input.txt")
 println("Result Day 4-2: $(day4Part2)")
 println("")
+
+day5Part1 = Day5.part1("./day-5/input.txt")
+println("Result Day 5-1: $(day5Part1)")
+day5Part2 = Day5.part2("./day-5/input.txt")
+println("Result Day 5-2: $(day5Part2)")
+println("")
+=#

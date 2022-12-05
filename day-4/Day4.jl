@@ -4,34 +4,32 @@ include("../Imports.jl")
 using .Imports
 
 
-function part1(file)
+function part1(sectors_by_elf_pair::Vector{Vector{SubString{String}}})
 
     function is_contained(elf_pair)
-        elf_1 = sign(elf_pair[2].lower - elf_pair[1].lower) 
-        elf_2 = sign(elf_pair[2].upper - elf_pair[1].upper)
+        elf_1 = sign(elf_pair[2][1] - elf_pair[1][1]) 
+        elf_2 = sign(elf_pair[2][2] - elf_pair[1][2])
         return elf_1 != elf_2 || (elf_1 == 0 && elf_2 == 0)
     end
 
-    sectors_by_elf_pair = list_of_strings_2d(file, "\n", ",")
-    sectors_by_elf_pair = map(collect,  sectors_by_elf_pair)
-    sectors_by_elf_pair = map(elf_pair -> map(sectors -> (lower = parse(Int64, split(sectors, "-")[1]), upper = parse(Int64, split(sectors, "-")[2])), elf_pair),  sectors_by_elf_pair)
-    num_pairs = filter(is_contained, sectors_by_elf_pair)
+    sectors_by_elf_pair = collect.(sectors_by_elf_pair)
+    sector_tuples = [[Tuple(parse.(Int, split(sectors, "-")))  for sectors in elf_pair] for elf_pair in sectors_by_elf_pair]
+    num_pairs = filter(is_contained, sector_tuples)
     return length(num_pairs)
 end
 
 
-function part2(file)
+function part2(sectors_by_elf_pair::Vector{Vector{SubString{String}}})
 
     function is_contained(elf_pair)
-        elf_1 = sign(elf_pair[2].lower - elf_pair[1].upper) 
-        elf_2 = sign(elf_pair[2].upper - elf_pair[1].lower)
+        elf_1 = sign(elf_pair[2][1] - elf_pair[1][2]) 
+        elf_2 = sign(elf_pair[2][2] - elf_pair[1][1])
         return elf_1 != elf_2 || (elf_1 == 0 && elf_2 == 0)
     end
 
-    sectors_by_elf_pair = list_of_strings_2d(file, "\n", ",")
-    sectors_by_elf_pair = map(collect,  sectors_by_elf_pair)
-    sectors_by_elf_pair = map(elf_pair -> map(sectors -> (lower = parse(Int64, split(sectors, "-")[1]), upper = parse(Int64, split(sectors, "-")[2])), elf_pair),  sectors_by_elf_pair)
-    num_pairs = filter(is_contained, sectors_by_elf_pair)
+    sectors_by_elf_pair = collect.(sectors_by_elf_pair)
+    sector_tuples = [[Tuple(parse.(Int, split(sectors, "-")))  for sectors in elf_pair] for elf_pair in sectors_by_elf_pair]
+    num_pairs = filter(is_contained, sector_tuples)
     return length(num_pairs)
 end
 

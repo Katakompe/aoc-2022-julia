@@ -4,13 +4,11 @@ include("../Imports.jl")
 using .Imports
 
 
-function part1(file)
-    elves = list_of_type_2d(file, Int64, "\n\n", "\n")
-    return max(map(sum, elves)...)
+function part1(elves::Vector{Vector{Int64}})::Int
+    return reduce((x,y) -> max.(x,y), map(sum, elves))
 end
 
-function part2(file)
-    elves = list_of_type_2d(file, Int64, "\n\n", "\n")
+function part2(elves::Vector{Vector{Int64}})::Int
     return sum(sort(map(sum, elves))[end-2:end])
 end
 

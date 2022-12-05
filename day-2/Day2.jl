@@ -3,18 +3,22 @@ module Day2
 include("../Imports.jl")
 using .Imports
 
-function part1(file)
-    move_scores = Dict([
-        ("X", 1),
-        ("Y", 2),
-        ("Z", 3),
-    ])
+const move_scores = Dict([
+    ("X", 1),
+    ("Y", 2),
+    ("Z", 3),
+])
 
-    enemy_move_to_my_move = Dict([
-        ("A", "X"),
-        ("B", "Y"),
-        ("C", "Z"),
-    ])
+const enemy_move_to_my_move = Dict([
+    ("A", "X"),
+    ("B", "Y"),
+    ("C", "Z"),
+])
+
+function part1(rounds::Vector{SubString{String}})
+
+
+ 
 
     #My Moves
     # X: Rock
@@ -26,7 +30,8 @@ function part1(file)
     # B: Paper
     # C: Scisors
 
-    function victory_score(my_move, enemy_move)
+    function victory_score(my_move::String, enemy_move::String)::Int
+      
         #draw
         if enemy_move_to_my_move[enemy_move] == my_move
             return 3
@@ -46,16 +51,16 @@ function part1(file)
         end
     end
 
-
-    rounds = list_of_strings(file)
-
+    if rounds[end] == ""
+        rounds = rounds[1:end-1]
+    end
     score = 0
 
     for round in rounds
         enemy_move = round[1:1]
         my_move = round[3:3]
         move = move_scores[my_move]
-        victory = victory_score(my_move, enemy_move)
+        victory = victory_score(String(my_move), String(enemy_move))
         score += move
         score += victory
     end
@@ -64,18 +69,19 @@ function part1(file)
 end
 
 
-function part2(file)    
-    victory_score = Dict([
-        ("X", 0),
-        ("Y", 3),
-        ("Z", 6),
-    ])
+const victory_score = Dict([
+    ("X", 0),
+    ("Y", 3),
+    ("Z", 6),
+])
 
-    move_scores_dict = Dict([
-        ("A", 1),
-        ("B", 2),
-        ("C", 3),
-    ])
+const move_scores_dict = Dict([
+    ("A", 1),
+    ("B", 2),
+    ("C", 3),
+])
+
+function part2(rounds::Vector{SubString{String}})    
 
     #Outcome
     # X: Lose
@@ -87,7 +93,8 @@ function part2(file)
     # B: Paper
     # C: Scisors
 
-    function move_score(outcome, enemy_move)
+    function move_score(outcome::String, enemy_move::String)::Int
+    
         #draw
         if outcome == "Y"
             return move_scores_dict[enemy_move]
@@ -107,13 +114,15 @@ function part2(file)
     end
 
 
-    rounds = list_of_strings(file)
-    score = 0
+    if rounds[end] == ""
+        rounds = rounds[1:end-1]
+    end
+    score::Int = 0
 
     for round in rounds
         enemy_move = round[1:1]
         outcome = round[3:3]
-        move = move_score(outcome, enemy_move)
+        move = move_score(String(outcome), String(enemy_move))
         victory = victory_score[outcome]
         score += move
         score += victory

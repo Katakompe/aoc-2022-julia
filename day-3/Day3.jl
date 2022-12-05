@@ -4,10 +4,9 @@ include("../Imports.jl")
 using .Imports
 
 
-function part1(file)
+function part1(rucksacks::Vector{SubString{String}})
 
-    function score(rucksack)
-        rucksack = collect(rucksack)
+    function score(rucksack::Vector{Char})
         compartments = permutedims([rucksack[1:fld(end,2)] rucksack[fld(end,2)+1:end]])
         duplicate = Int(first(intersect(compartments[1,:], compartments[2,:])))
         if duplicate > 96
@@ -16,13 +15,12 @@ function part1(file)
             return duplicate-38
         end
     end
-
-    rucksacks = list_of_strings(file)
-    return sum(map(score, rucksacks))
+    
+    return sum(map(score, collect.(rucksacks)))
 end
 
 
-function part2(file)
+function part2(rucksacks::Vector{SubString{String}})
 
     function score(group)
         badge = Int(first(intersect(group...)))
@@ -33,8 +31,7 @@ function part2(file)
         end
     end
     
-    rucksacks = list_of_strings(file)
-    rucksacks = map(collect, rucksacks)
+    rucksacks = collect.(rucksacks)
     groups = permutedims(reshape(rucksacks, (3, fld(length(rucksacks),3))))
     return sum(map(score, eachrow(groups)))
     
