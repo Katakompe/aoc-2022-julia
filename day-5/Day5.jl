@@ -6,7 +6,7 @@ using .Imports
 using DataStructures
 
 
-function parse_towers(towers_str::String)
+function parse_towers(towers_str::SubString{String})
     tower_lines = split(towers_str, "\n")
     actual_tower_lines = filter(line -> line[1:2] != " 1", tower_lines)
     cleaned_lines = map(l -> collect(l[2:4:end]), actual_tower_lines)
@@ -25,7 +25,7 @@ function parse_towers(towers_str::String)
     return stacks
 end
 
-function parse_moves(moves_str::String)
+function parse_moves(moves_str::SubString{String})
     move_regex = r"move (\d+) from (\d+) to (\d+)"
     moves = [parse.(Int, match(move_regex, s).captures) for s in split(moves_str, "\n")]
     moves_tuples = [(count = m[1], from = m[2], to = m[3]) for m in moves]
