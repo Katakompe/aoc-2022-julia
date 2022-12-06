@@ -22,14 +22,14 @@ function runDay(
     part1 =part1_fn(input)
     println("Result Day $day-1: $(part1)")
     duration1 = @elapsed part1_fn(input)
-    println("Duration for part1: $(duration1*1000000) μs")
+    println("Duration for part1: $(round(duration1*1000000, digits=1)) μs")
 
     #part2
     input = input2_transform(raw_input)
     part2 =  part2_fn(input)
     println("Result Day $day-2: $(part2)")
     duration2 = @elapsed part2_fn(input)
-    println("Duration for part2: $(duration2*1000000) μs")
+    println("Duration for part2: $(round(duration2*1000000, digits=1)) μs")
     println("")
     close(f)
 end
