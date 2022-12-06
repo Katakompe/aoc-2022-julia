@@ -1,7 +1,7 @@
 include("./Imports.jl")
 using .Imports
 
-solved_days= [1,2,3,4,5]
+solved_days= [1,2,3,4,5,6]
 for day in solved_days
     include("./day-$day/Day$day.jl")
 end
@@ -22,7 +22,7 @@ function runDay(
     part1 =part1_fn(input)
     println("Result Day $day-1: $(part1)")
     duration1 = @elapsed part1_fn(input)
-    println("Duration for part2: $(duration1*1000000) μs")
+    println("Duration for part1: $(duration1*1000000) μs")
 
     #part2
     input = input2_transform(raw_input)
@@ -66,9 +66,17 @@ runDay(
     str -> list_of_strings_2d(str, "\n", ",")
     )
 
-runDay(5, Day5.part1, Day5.part2)
+runDay(
+    5,
+    Day5.part1,
+    Day5.part2
+    )
 
-
+    runDay(
+        6,
+        Day6.part1,
+        Day6.part2
+        )
 
 #=
 
