@@ -2,8 +2,9 @@ module Day3
 
 include("../Imports.jl")
 using .Imports
+using Folds
 
-
+#best: 875.5
 function part1(rucksacks::Vector{SubString{String}})
 
     function score(rucksack::Vector{Char})
@@ -16,10 +17,10 @@ function part1(rucksacks::Vector{SubString{String}})
         end
     end
     
-    return sum(map(score, collect.(rucksacks)))
+    return Folds.sum(score, collect.(rucksacks))
 end
 
-
+#best: 558.1
 function part2(rucksacks::Vector{SubString{String}})
 
     function score(group)
@@ -33,7 +34,7 @@ function part2(rucksacks::Vector{SubString{String}})
     
     rucksacks = collect.(rucksacks)
     groups = permutedims(reshape(rucksacks, (3, fld(length(rucksacks),3))))
-    return sum(map(score, eachrow(groups)))
+    return Folds.sum(score, eachrow(groups))
     
 end
 

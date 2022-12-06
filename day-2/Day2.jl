@@ -2,6 +2,7 @@ module Day2
 
 include("../Imports.jl")
 using .Imports
+using Folds
 
 const move_scores = Dict([
     ("X", 1),
@@ -51,21 +52,19 @@ function part1(rounds::Vector{SubString{String}})
         end
     end
 
+
+    function calcScore(round)
+        @inbounds enemy_move = round[1:1]
+        @inbounds my_move = round[3:3]
+        move = move_scores[my_move]
+        victory = victory_score(String(my_move), String(enemy_move))
+        return move+victory
+    end
+
     if rounds[end] == ""
         rounds = rounds[1:end-1]
     end
-    score = 0
-
-    for round in rounds
-        enemy_move = round[1:1]
-        my_move = round[3:3]
-        move = move_scores[my_move]
-        victory = victory_score(String(my_move), String(enemy_move))
-        score += move
-        score += victory
-    end
-
-    return score
+    return Folds.sum(calcScore, rounds)
 end
 
 
@@ -113,21 +112,21 @@ function part2(rounds::Vector{SubString{String}})
         end
     end
 
+    function calcScore(round)
+        @inbounds enemy_move = round[1:1]
+        @inbounds outcome = round[3:3]
+        move = move_score(String(outcome), String(enemy_move))
+        victory = victory_score[outcome]
+        return move+victory
+    end
 
     if rounds[end] == ""
         rounds = rounds[1:end-1]
     end
-    score::Int = 0
 
-    for round in rounds
-        enemy_move = round[1:1]
-        outcome = round[3:3]
-        move = move_score(String(outcome), String(enemy_move))
-        victory = victory_score[outcome]
-        score += move
-        score += victory
-    end
-    return score
+    return Folds.sum(calcScore, rounds)
+   
+    
 end
 
 export part1
