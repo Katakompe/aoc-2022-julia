@@ -1,7 +1,7 @@
 include("./Imports.jl")
 using .Imports
 
-solved_days= [1,2,3,4,5,6]
+solved_days= [1,2,3,4,5,6,7,8]
 for day in solved_days
     include("./day-$day/Day$day.jl")
 end
@@ -36,6 +36,7 @@ function runDay(
     println("")
     close(f)
 end
+
 
 runDay(
     1,
@@ -75,35 +76,25 @@ runDay(
     Day5.part2
     )
 
-    runDay(
-        6,
-        Day6.part1,
-        Day6.part2
-        )
+runDay(
+    6,
+    Day6.part1,
+    Day6.part2
+    )
+    
+runDay(
+    7,
+    Day7.part1,
+    Day7.part2,
+    str -> list_of_strings_2d(str, "\$ ", "\n"),
+    str -> list_of_strings_2d(str, "\$ ", "\n"),
+    )
 
-#=
+runDay(
+    8,
+    Day8.part1,
+    Day8.part2,
+    str -> permutedims(hcat(list_of_type_2d(str, Int, "\n", "")...)),
+    str -> permutedims(hcat(list_of_type_2d(str, Int, "\n", "")...)),
+    )
 
-day2Part1 = Day2.part1("./day-2/input.txt")
-println("Result Day 2-1: $(day2Part1)")
-day2Part2 = Day2.part2("./day-2/input.txt")
-println("Result Day 2-2: $(day2Part2)")
-println("")
-
-day3Part1 = Day3.part1("./day-3/input.txt")
-println("Result Day 3-1: $(day3Part1)")
-day3Part2 = Day3.part2("./day-3/input.txt")
-println("Result Day 3-2: $(day3Part2)")
-println("")
-
-day4Part1 = Day4.part1("./day-4/input.txt")
-println("Result Day 4-1: $(day4Part1)")
-day4Part2 = Day4.part2("./day-4/input.txt")
-println("Result Day 4-2: $(day4Part2)")
-println("")
-
-day5Part1 = Day5.part1("./day-5/input.txt")
-println("Result Day 5-1: $(day5Part1)")
-day5Part2 = Day5.part2("./day-5/input.txt")
-println("Result Day 5-2: $(day5Part2)")
-println("")
-=#
